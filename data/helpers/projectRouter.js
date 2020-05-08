@@ -94,7 +94,7 @@ router.post("/:id/actions", validateProjectId, validateAction, (req, res) => {
         })
         .catch(error => {
             console.log(error);
-            res.status(500).json({error: "There was an error while saving the action to the database"});
+            res.status(500).json({error: "The id does not match a project"});
         });
     }
 })
@@ -136,8 +136,10 @@ router.delete("/:id/actions", validateProjectId, validateActionId, (req, res) =>
 function validateProjectId(req, res, next) {
     let project_id = req.params.id;
     if (!project_id) {
-        res. status(400).json({message: "The project id was invalid"})
-    } else {
+        res.status(400).json({message: "The project id was invalid"})
+    } else if (project_id !== req.params.id) {
+        res.status(400).json({message: "The project id doesn't match any projects"})
+    }else {
         project_id = req.body
     }
     next();
